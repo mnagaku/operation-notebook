@@ -13,7 +13,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-releas
     sudo apt-get update && \
     sudo add-apt-repository universe && \
     sudo apt-get install -y powershell && \
-    pip install -U sshkernel && python -m sshkernel install --sys-prefix && \
+    pip install sshkernel && python -m sshkernel install --sys-prefix && \
     pip install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
     pip install ansible-kernel && python -m ansible_kernel.install --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ssh --sys-prefix && \
@@ -21,5 +21,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-releas
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ansible --sys-prefix && \
     rm -rf /opt/conda/share/jupyter/lc_wrapper_kernels/bash && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+COPY diff4012.patch /tmp
+
+RUN cp /tmp/diff4012.patch /opt/conda/lib/python3.7/site-packages/powershell_kernel/ && \
+    cd /opt/conda/lib/python3.7/site-packages/powershell_kernel && patch < diff4012.patch
 
 USER $NB_USER
