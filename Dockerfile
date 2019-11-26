@@ -3,11 +3,16 @@ MAINTAINER mnagaku
 
 USER root
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-release gnupg && \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-release gnupg software-properties-common && \
     pip install boto3 boto && \
     echo "deb http://packages.cloud.google.com/apt cloud-sdk-bionic main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     apt-get update && sudo apt-get install -y google-cloud-sdk && \
+    wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb && \
+    sudo dpkg -i packages-microsoft-prod.deb && \
+    sudo apt-get update && \
+    sudo add-apt-repository universe && \
+    sudo apt-get install -y powershell && \
     pip install -U sshkernel && python -m sshkernel install --sys-prefix && \
     pip install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
     pip install ansible-kernel && python -m ansible_kernel.install --sys-prefix && \
