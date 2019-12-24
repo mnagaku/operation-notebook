@@ -22,9 +22,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-releas
     rm -rf /opt/conda/share/jupyter/lc_wrapper_kernels/bash && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY diff4012.patch /tmp
+COPY diff4013.patch /tmp
 
-RUN cp /tmp/diff4012.patch /opt/conda/lib/python3.7/site-packages/powershell_kernel/ && \
-    cd /opt/conda/lib/python3.7/site-packages/powershell_kernel && patch < diff4012.patch
+RUN cp /tmp/diff4013.patch /opt/conda/lib/python3.7/site-packages/powershell_kernel/ && \
+    cd /opt/conda/lib/python3.7/site-packages/powershell_kernel && patch < diff4013.patch
 
 USER $NB_USER
+

@@ -1,0 +1,22 @@
+diff --git a/powershell_kernel/kernel.py b/powershell_kernel/kernel.py
+index 7214a51..ea59f40 100644
+--- a/powershell_kernel/kernel.py
++++ b/powershell_kernel/kernel.py
+@@ -62,11 +62,16 @@ def do_execute(self, code, silent, store_history=True,
+                 self.__createProxy()
+ 
+             output = self.proxy.run_command(code)
++            return_code = self.proxy.run_command('$?')
++
++            status = 'error'
++            if 'True' in return_code:
++                status = 'ok'
+ 
+             message = {'name': 'stdout', 'text': output}
+             self.send_response(self.iopub_socket, 'stream', message)
+ 
+-            return {'status': 'ok', 'execution_count': self.execution_count,
++            return {'status': status, 'execution_count': self.execution_count,
+                     'payload': [], 'user_expressions': {}}
+ 
+         except Exception:
