@@ -10,3 +10,12 @@
 - powershellカーネルを導入
 - sshカーネルを導入
 - bashカーネルを削除
+
+## powershell環境
+
+マイクロソフト純正のコンテナイメージを参考にしています
+
+https://github.com/PowerShell/PowerShell-Docker/blob/master/release/stable/ubuntu18.04/docker/Dockerfile
+
+ansibleにwinrmモジュールを追加しています
+
