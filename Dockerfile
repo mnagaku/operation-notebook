@@ -6,22 +6,30 @@ USER root
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
     PSModuleAnalysisCachePath=/var/cache/microsoft/powershell/PSModuleAnalysisCache/ModuleAnalysisCache
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli lsb-release gnupg software-properties-common gss-ntlmssp less && \
+RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-transport-https gnupg lsb-release gnupg software-properties-common gss-ntlmssp less && \
     echo "deb http://packages.cloud.google.com/apt cloud-sdk-bionic main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update && sudo apt-get install -y google-cloud-sdk && \
+    apt-get update && apt-get install -y google-cloud-sdk && \
+    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list && \
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    apt-get update && apt-get install -y kubeadm kubectl kubelet && \
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb && \
     dpkg -i packages-microsoft-prod.deb && \
     apt-get update && \
     add-apt-repository universe && \
     apt-get install -y powershell && \
-    pip install pywinrm boto3 boto && \
+    echo "deb https://cran.rstudio.com/bin/linux/ubuntu bionic-cran35/" | tee -a /etc/apt/sources.list.d/cran.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
+    apt-get update && apt-get install -y r-base && \
+    Rscript -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest', 'IRkernel', 'tidyverse'))" && \
+    pip install pywinrm boto3 boto awscli aws-parallelcluster && \
     pip install sshkernel && python -m sshkernel install --sys-prefix && \
     pip install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
     pip install ansible-kernel && python -m ansible_kernel.install --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ssh --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/powershell --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ansible --sys-prefix && \
+    jupyter wrapper-kernelspec install /usr/local/lib/R/site-library/IRkernel/kernelspec --sys-prefix && \
     rm -rf /opt/conda/share/jupyter/lc_wrapper_kernels/bash && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     pwsh \
