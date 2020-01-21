@@ -22,10 +22,10 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-transport-htt
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9 && \
     apt-get update && apt-get install -y r-base && \
     Rscript -e "install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest', 'IRkernel', 'tidyverse'))" && \
-    pip install pywinrm boto3 boto awscli aws-parallelcluster && \
-    pip install sshkernel && python -m sshkernel install --sys-prefix && \
-    pip install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
-    pip install ansible-kernel && python -m ansible_kernel.install --sys-prefix && \
+    pip --no-cache-dir install pywinrm boto3 boto awscli aws-parallelcluster ansible-jupyter-widgets && \
+    pip --no-cache-dir install sshkernel && python -m sshkernel install --sys-prefix && \
+    pip --no-cache-dir install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
+    pip --no-cache-dir install ansible_kernel && python -m ansible_kernel.install --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ssh --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/powershell --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ansible --sys-prefix && \
@@ -41,7 +41,8 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-transport-htt
         while(!(Test-Path -Path \$env:PSModuleAnalysisCachePath)) {  \
           Write-Host "'Waiting for $env:PSModuleAnalysisCachePath'" ; \
           Start-Sleep -Seconds 6 ; \
-        }"
+        }" && \
+    chown -R jovyan:users /home/jovyan
 
 COPY diff4013.patch /tmp
 
