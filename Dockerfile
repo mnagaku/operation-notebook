@@ -25,7 +25,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-transport-htt
     pip --no-cache-dir install pywinrm boto3 boto awscli aws-parallelcluster ansible-jupyter-widgets && \
     pip --no-cache-dir install sshkernel && python -m sshkernel install --sys-prefix && \
     pip --no-cache-dir install powershell_kernel && python -m powershell_kernel.install --sys-prefix && \
-    pip --no-cache-dir install git+https://github.com/mnagaku/ansible-jupyter-kernel && python -m ansible_kernel.install --sys-prefix && \
+    pip --no-cache-dir install git+https://github.com/ansible/ansible-jupyter-kernel && python -m ansible_kernel.install --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ssh --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/powershell --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ansible --sys-prefix && \
