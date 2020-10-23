@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-utils apt-tra
     apt-get update && apt-get install -y r-base && \
     Rscript -e "install.packages(c('repr','IRdisplay','evaluate','crayon','pbdZMQ','devtools','uuid','digest','IRkernel',\
     'tidyverse','RcppRoll','caret'), dependencies=TRUE)" && \
-    pip --no-cache-dir install aws-parallelcluster ansible-jupyter-widgets && \
+    pip --no-cache-dir install aws-parallelcluster ansible-jupyter-widgets boto boto3 && \
     pip --no-cache-dir install sshkernel && python -m sshkernel install --sys-prefix && \
 #    pip --no-cache-dir install ansible-kernel && python -m ansible_kernel.install --sys-prefix && \
     jupyter wrapper-kernelspec install /opt/conda/share/jupyter/kernels/ssh --sys-prefix && \
