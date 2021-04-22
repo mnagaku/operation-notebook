@@ -3,7 +3,8 @@ MAINTAINER mnagaku
 
 USER root
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y apt-utils apt-transport-https ca-certificates gnupg \
+RUN apt-get purge -yq mongodb*
+RUN apt-get update && apt-get -yq upgrade && apt-get install -yq apt-utils apt-transport-https ca-certificates gnupg \
     unzip groff less dirmngr software-properties-common libcurl4-openssl-dev libxml2-dev file && \
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | \
     tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
